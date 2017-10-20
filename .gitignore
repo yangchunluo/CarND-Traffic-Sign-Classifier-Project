@@ -7,5 +7,4 @@ models
 examples
 .DS_Store
 checkpoint
-lenet*
 traffic-signs-data.zip
