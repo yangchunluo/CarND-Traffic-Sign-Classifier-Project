@@ -24,7 +24,7 @@ The goals / steps of this project are the following:
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
-You're reading it! and here is a link to my [project code](https://github.com/yangchunluo/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+You're reading it! and here is a link to my [project code](https://github.com/yangchunluo/udacity-self-driving-p2-traffic-sign/blob/master/Traffic_Sign_Classifier.ipynb)
 
 ### Data Set Summary & Exploration
 
@@ -47,11 +47,15 @@ From each dataset (training, validation, and test), I randomly plotted an image 
 
 Also for each dataset, I plotted the histogram of the label distribution. All the datasets follow a similar distribution, although certain labels have higher coverage than others. 
 
-<img src="writeup-images/label_hist_train.png" alt="Randomly chosen images from each dataset" width=200/>
+<img src="writeup-images/label_hist_train.png" alt="" width=200/>
 
-<img src="writeup-images/label_hist_valid.png" alt="Randomly chosen images from each dataset" width=200/>
+<img src="writeup-images/label_hist_valid.png" alt="" width=200/>
 
-<img src="writeup-images/label_hist_test.png" alt="Randomly chosen images from each dataset" width=200/>
+<img src="writeup-images/label_hist_test.png" alt="" width=200/>
+
+In addition, I added a code block to peek at the images associated a given label in the dataset.
+
+<img src="writeup-images/peek-label.jpg" alt="" width=200/>
 
 ### Design and Test a Model Architecture
 
@@ -59,7 +63,7 @@ Also for each dataset, I plotted the histogram of the label distribution. All th
 
 I decided not to convert the image to greyscale since additional color information may be relevant to the model.
 
-The only preprocessing step is normalization. I chose to do (pixel-128)/128 for the sake of simplicity. Here are the image before and after the normalization.
+The only preprocessing step was normalization. I chose to do (pixel-128)/128 for the sake of simplicity. Here are the images before and after the normalization.
 
 <img src="writeup-images/normalization.jpg" alt="Randomly chosen images from each dataset" width=120/>
 
@@ -98,13 +102,13 @@ My final model results were:
 - validation set accuracy of 96.1% 
 - test set accuracy of 93.8%
 
-I started with basic LeNet CNN architecture. It was chosen because it is proven to work with the handle written letters. Traffic sign recognition is not fundamentally different from handle written letters. CNN architecture can capture the local patterns through convolution and gradually build up the depth of dimension by learning more and more complex features.
+I started with basic LeNet CNN architecture. It was chosen because it was proven to work well with the handle written letters. Traffic sign recognition is not fundamentally different from handle written letters. CNN architecture can capture the local patterns through convolution and gradually build up the depth of dimension by learning more and more complex features.
  
-During training, I observed that after 10 epochs, there is quite a bit of gap between training and validation set accuracy: while the training accuracy is 98.2%, the validation accuracy plateaued at only 87.4%. This indicates that the model is overfitting the training data.
+During training, I observed that after 10 epochs, there was quite a bit of gap between training and validation set accuracy: while the training accuracy was 98.2%, the validation accuracy plateaued at only 87.4%. This indicates that the model was overfitting the training data.
 
 My solution was to add a dropout layer (keep_prob=0.5) after the first fully-connected layer. Dropout can force the network to learn redundant features and mitigate overfitting. This improved the validation accuracy a bit, but still not to the point of satisfaction.
 
-I further added another dropout layer (keep_prob=0.5) after the second fully-connected layer. Due to this addition, I increased the number of training epochs. The fixed learning rate of 0.001 is too high in the later phase of the training. So I employed an exponential decay on the learning rate, of 0.96 per each epoch.
+I further added another dropout layer (keep_prob=0.5) after the second fully-connected layer. Due to this addition, I increased the number of training epochs. The fixed learning rate of 0.001 was too high in the later phase of the training. So I employed an exponential decay on the learning rate, of 0.96 per each epoch.
 
 After these changes, the gap between training and validation accuracy is reduced significantly. After 10 epochs, the validation accuracy still increases steadily around 93%. I increased the number of epochs to 20 and the validation accuracy plateaued around 96%.
 
@@ -116,6 +120,11 @@ Here are five German traffic signs that I found on the web:
 
 <img src="images-from-web/resized/resized2.jpg" alt="" width=50/> <img src="images-from-web/resized/resized3.jpg" alt="" width=50/> <img src="images-from-web/resized/resized4.jpg" alt="" width=50/> <img src="images-from-web/resized/resized5.jpg" alt="" width=50/> <img src="images-from-web/resized/resized6.jpg" alt="" width=50/>
 
+The first two images were chosen due to the complex shape of the figures inside the red triangle.
+
+The third image was chosen for its different color compared to other traffic signs (blue background vs. red bounding shape).
+
+The last two images were chosen for the similarity of speed limit signs--they are the generally the same except the numbers inside. Sometimes, the digits in one sign is the superset of another (e.g. 120 vs 20).
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
@@ -177,7 +186,7 @@ For the fourth image, the model is quite certain and the prediction is correct. 
 | 0.0000  | Speed limit (60km/h) |
 | 0.0000  | Speed limit (100km/h) |
 
-For the fifth image, the model is uncertain. It is mis-predicted as 20km/h in fact the correct label is 120km/h. This is probably due to the similarity between general structure of speed limit signs but differing only the number inside. The correct label has the fourth highest probability. The top five softmax probabilities are:
+For the fifth image, the model is uncertain. It is mis-predicted as 20km/h in fact the correct label is 120km/h. This is probably due to the similarity between general structure of speed limit signs but differing only the numbers inside. The correct label has the fourth highest probability. The top five softmax probabilities are:
 
 | Probability         	|     Prediction	   | 
 |:---------------------:|:---------------------------------------------:|
